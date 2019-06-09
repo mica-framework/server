@@ -15,7 +15,7 @@ function buildContainer {
 
   echo " --> Downloading TCP Logger ..."
   # now get the tcp-logger for the conatiner
-  curl -u ${USERNAME}:${PASSWORD} https://github.com/mica-framework/tools/raw/master/tcp-logger/dist/TCPLogAnalyzer --output ./libs/tcp_logger
+  curl -u https://github.com/mica-framework/tools/raw/master/tcp-logger/dist/TCPLogAnalyzer --output ./libs/tcp_logger
 
   # build the container
   echo " --> DOCKER: build "$MODULE_NAME
