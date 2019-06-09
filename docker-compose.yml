@@ -1,0 +1,56 @@
+# this is the docker-compose version we are using
+version: '3'
+
+# in here we're defining all services started by the docker-compose
+services:
+
+  # first we have the redis-db which is used for
+  # the current session of the mica-server
+  # it includes infos about attacks which need to be processed
+  # as well as the hostnames of all available victims
+  mica-cache:
+    image: "redis"
+    container_name: mica-cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - ~/redis:/data
+
+  # mica-registry which contains all images build by the mica-server
+  mica-registry:
+    image: "registry:2"
+    container_name: mica-registry
+    ports:
+      - "5000:5000"
+    volumes:
+      - ~/docker:/var/lib/registry
+      - ./certs:/certs
+
+  # mica-server is the central component of the mica-framework
+  # it builds images for each attack and
+  # provides a extensible RESTful-API for the CLI- and Agent-Communication
+  # between those and the the server
+  mica-server:
+    build: .
+    dns:
+      - 8.8.8.8 # google dns server for apt-get update / install
+      - 8.8.4.4 # another google dns server for apt-get update / install
+    ports:
+      - "80:80"
+      - "443:443"
+    privileged: true
+    depends_on:
+      - mica-cache
+      - mica-registry
+    volumes:
+      # we are using the host-docker client therefore! that's much more convenient
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./certs:/certs
+      - ~/.ssh:/tmp/.ssh
+    environment:
+      - REDIS_URL=mica-cache  # through the used redis-client we do not need to use redis://container:port
+      - REGISTRY_URL=         # e.g. localhost / 127.0.0.1 / hub.docker.com
+      - DOCKERFILE_URL=      # github.com/mica-framework/modules/raw/master/Dockerfile
+      - SYSLOG_RECEIVER=IP-ADDRESS:PORT   # e.g. 127.0.0.1:512
+      - ATTACK_MODULE_REPOSITORY_SSH=     # e.g. git@github.com:mica-framework/attack-modules.git
+      - MODULE_BRANCH=master
