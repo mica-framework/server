@@ -38,6 +38,65 @@ not the windows ``CRLF`` endings!
 
 
 
+## How to create your custom modules
+#### 1) Create your own repo
+The best way to create your custom modules and to integrate those to the build process is by creating first of all a separate
+git repository. If you'd like to use a private repository, then use a deployment ssh key which allows the server to clone the
+repo to the local file system for the module build. And always try to use the ssh git clone instead of the https if you need
+to authenticate for a repository.
+
+The created repository just needs to be added to the docker-compose.yml file like this:
+```python
+ATTACK_MODULE_REPOSITORY_SSH=git@github.com/mica-framework/modules.git
+``` 
+
+#### 2) Structure your modules
+The modules repository then should currently be structured in a specific way:
+
+```
+root_directory
+    |- MODULE_NAME
+        |- startup.sh # a script which will execute the necessary commands to run the module immediately
+        |- MODULE.rb  # the ruby metasploit modules
+        |- libs       # all the dependencies need to be saved in the libs directory
+            |- exploit.py
+            |- dependencies.py
+            |- ...
+```
+This Structure provides the possibility of extending the framework module by module. This also separates the modules itself, so that the build process will be able to build a microservice for each of those modules.
+
+#### 3) Specify the Target Branch of the Modules Repo
+If you'd like to use a specific branch, then just edit the entry in the docker-compose.yml:
+```python
+MODULE_BRANCH=master
+```
+
+#### 4) The automatic created Docker-Container File Structure
+Each Docker container is structured like you see within the code section below:
+```
+/opt/.msf4/modules
+    |- auxiliary
+        |- seclab
+            |- MODULE_NAME
+                |- MODULE.rb  # this is the ruby metasploit module
+        |- ...
+    |- exploits
+    | ...
+/sources
+    |- MODULE_NAME
+        |- exploit.py
+        |- dependencies.py
+        |- ...
+```
+The module directory within the `/opt/msf4` directory contains all modules used by the Metasploit-Framework.
+These are basically just the <i>MODULE.rb</i> files. The dependencies and additional sources are stored within the `/sources/` directory. There you can find the dependencies within a corresponding sub-directory which is called after the module name.
+
+<b>Important: Please consider this structure if you're going to use dependencies and additional sources! This could may produces errors, because your local dependency paths may not be the same which invalidates the path in the docker container!</b>
+
+
+
+
+
 ## Contribution
 Feel free to contribute or create issues on this project! Let me know what you think! I'm happy about every feedback! :-)
 Let's create a new and modular framework for cyber attack simulations to improve the researches on detecting those.
