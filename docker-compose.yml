@@ -49,8 +49,10 @@ services:
       - ~/.ssh:/tmp/.ssh
     environment:
       - REDIS_URL=mica-cache  # through the used redis-client we do not need to use redis://container:port
+      - DOCKERFILE_URL=https://raw.githubusercontent.com/mica-framework/tools/master/docker/module_image/Dockerfile
+      #### CUSTOMIZE YOUR MiCA-SERVER BELOW HERE! #####
       - REGISTRY_URL=         # e.g. localhost / 127.0.0.1 / hub.docker.com
-      - DOCKERFILE_URL=      # github.com/mica-framework/modules/raw/master/Dockerfile
       - SYSLOG_RECEIVER=IP-ADDRESS:PORT   # e.g. 127.0.0.1:512
       - ATTACK_MODULE_REPOSITORY_SSH=     # e.g. git@github.com:mica-framework/attack-modules.git
       - MODULE_BRANCH=master
+      #### END OF CUSTOMIZATION ####

@@ -11,11 +11,11 @@ function buildContainer {
 
   # get the docker file
   echo " --> Downloading Dockerfile ..."
-  curl -u ${USERNAME}:${PASSWORD} "$DOCKERFILE_URL" --output Dockerfile
+  curl "$DOCKERFILE_URL" --output Dockerfile
 
   echo " --> Downloading TCP Logger ..."
   # now get the tcp-logger for the conatiner
-  curl -u ${USERNAME}:${PASSWORD} https://github.com/mica-framework/tools/raw/master/tcp-logger/dist/TCPLogAnalyzer --output ./libs/tcp_logger
+  curl https://github.com/mica-framework/tools/raw/master/tcp-logger/dist/TCPLogAnalyzer --output ./libs/tcp_logger
 
   # build the container
   echo " --> DOCKER: build "$MODULE_NAME

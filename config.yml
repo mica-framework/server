@@ -14,7 +14,7 @@ database:
     url: 'localhost'
     port: 9000
   influx:
-    url: '192.168.123.223'
+    url: 'localhost'
     port: 8086
     user: '' #FIXME that's again something what sould be a secret!!
     password: '' # FIXME that's again something what should be a secret!!
