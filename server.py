@@ -22,6 +22,7 @@ from routes import *
 from config import *
 import multiprocessing
 import subprocess
+import time
 
 application = Flask(__name__)
 
@@ -46,14 +47,15 @@ def run_server():
 
 
 def initial_image_build():
-    sleep(20) # wait 20 seconds for the startup build
-    th = multiprocessing.Process(target=(lambda: subprocess.call(['/bin/bash', '/app/scripts/deploy_develop.sh'])))
-    th.start()
+    time.sleep(10) # wait 10 seconds for the startup build
+    subprocess.call(['/bin/bash', '/app/scripts/deploy_develop.sh'])
 
 
+# startup the server if this file is called as main file
 if __name__ == '__main__':
     # startup the server
     run_server()
 
-    # now initially build the images
+# at startup always run an automatic build
+if application.config.ENV and application.config.ENV == "production":
     initial_image_build()
