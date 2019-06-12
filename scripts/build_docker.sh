@@ -25,8 +25,8 @@ function buildContainer {
   # need to add the push to docker registry
   echo " --> DOCKER: deploy to registry"
   docker commit "$DOCKER_NAME_LOWER" "$DOCKER_NAME_LOWER"
-  REMOTE_TAG="$REGISTRY"":5000/apt-toolchain/""$DOCKER_NAME_LOWER"
-  echo " --> pushing $REMOTE_TAG to $REGISTRY"
+  REMOTE_TAG="$REGISTRY_URL"":5000/apt-toolchain/""$DOCKER_NAME_LOWER"
+  echo " --> pushing $REMOTE_TAG to $REGISTRY_URL"
   docker tag "$DOCKER_NAME_LOWER" "$REMOTE_TAG"
   docker push ${REMOTE_TAG}
 }
@@ -77,7 +77,7 @@ function buildNative {
   ATTACK_STRING=$(echo "$ATTACK_STRING" | sed -r "s/[\n]+//g")
 
   # ok so now send the command to the backend
-  curl -X POST -H "Content-Type: application/json" --data "{\"name\": \"$MODULE_NAME\", \"command\": \"$ATTACK_STRING\"}" "$REGISTRY/api/v1/attack/add"
+  curl -X POST -H "Content-Type: application/json" --data "{\"name\": \"$MODULE_NAME\", \"command\": \"$ATTACK_STRING\"}" "$REGISTRY_URL/api/v1/attack/add"
 }
 
 # first we need to checkout the APT-Module (develop) branch
