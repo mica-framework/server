@@ -20,9 +20,11 @@
 from flask import Flask
 from routes import *
 from config import *
+from os import urandom
 import multiprocessing
 import subprocess
 import time
+import random
 
 application = Flask(__name__)
 
@@ -46,8 +48,14 @@ def run_server():
     th.start()
 
 
+@aft
 def initial_image_build():
-    time.sleep(10) # wait 10 seconds for the startup build
+    # get a random time to wait from 5 to 10 seconds for each worker
+    random.seed(urandom(5))
+    time_to_wait_for_build = random.randint(5, 10)
+
+    # now wait to start the build
+    time.sleep(time_to_wait_for_build)
     subprocess.call(['/bin/bash', '/app/scripts/deploy_develop.sh'])
 
 
