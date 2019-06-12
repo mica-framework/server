@@ -48,7 +48,6 @@ def run_server():
     th.start()
 
 
-@aft
 def initial_image_build():
     # get a random time to wait from 5 to 10 seconds for each worker
     random.seed(urandom(5))
