@@ -43,12 +43,7 @@ def _run_restful_api():
         application.run(threaded=True)
 
 
-def run_server():
-    th = multiprocessing.Process(target=_run_restful_api)
-    th.start()
-
-
-def initial_image_build():
+def _initial_image_build():
     # get a random time to wait from 5 to 10 seconds for each worker
     random.seed(urandom(5))
     time_to_wait_for_build = random.randint(5, 10)
@@ -58,10 +53,17 @@ def initial_image_build():
     subprocess.call(['/bin/bash', '/app/scripts/deploy_develop.sh'])
 
 
+def run_server():
+    th = multiprocessing.Process(target=_run_restful_api)
+    th.start()
+
+
+
 # startup the server if this file is called as main file
 if __name__ == '__main__':
     # startup the server
     run_server()
 
 # at startup always run an automatic build
-initial_image_build()
+init_thread = multiprocessing.Process(target=_initial_image_build)
+init_thread.start()
