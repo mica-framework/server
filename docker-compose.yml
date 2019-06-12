@@ -24,7 +24,6 @@ services:
       - "5000:5000"
     volumes:
       - ~/docker:/var/lib/registry
-      - ./certs:/certs
 
   # mica-server is the central component of the mica-framework
   # it builds images for each attack and
@@ -45,7 +44,6 @@ services:
     volumes:
       # we are using the host-docker client therefore! that's much more convenient
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./certs:/certs
       - ~/.ssh:/tmp/.ssh
     environment:
       - REDIS_URL=mica-cache  # through the used redis-client we do not need to use redis://container:port

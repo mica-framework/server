@@ -57,5 +57,4 @@ if __name__ == '__main__':
     run_server()
 
 # at startup always run an automatic build
-if application.config.ENV and application.config.ENV == "production":
-    initial_image_build()
+initial_image_build()
