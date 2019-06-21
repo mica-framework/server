@@ -1,0 +1,13 @@
+# this is the docker-compose version we are using
+version: '3'
+
+# in here we're defining all services started by the docker-compose
+services:
+
+  # running a local container with an influx database
+  # influx is required for storing logfiles
+  mica-influxdb:
+    image: influxdb
+    container_name: mica-influxdb
+    ports:
+      - "8086:8086"

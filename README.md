@@ -15,16 +15,24 @@ Running the server basically requires Docker and enough disk space for storing t
 
 
 
-## How to run the Server ..
+## How to run the Server
 The server runs as a Docker Service by using Docker Compose. So you need Docker on your system. Your host OS is not important :-)
 
 If you'd like to run the Server on Linux, then you only need to clone this repo
 followed by a configuration of the docker-compose.yml and the config.yml for database connections.
 
-After the configuration of the docker-compose.yml and config.yml start the server by using the docker-compose command:
+If you configured a custom influx database (which is required for storing attack logs), then just run the following command:
 
 ```bash 
-$ docker-compose up --build
+docker-compose up --build
+```
+
+If you do not have an influx database within your infrastructure, then just use the provided influx-container by executing the following command.
+Please note, that you need to set the config.yml file back to default if you're using the provided influx-container. Additional changes are also
+possible by customizing the docker-compose YAML files.
+
+```bash
+docker-compose up -f docker-compose.yml -f ./docker/influxdb.yml --build
 ```
 
 The server also starts two separated services, which are mandatory for the central MiCA-Server:
