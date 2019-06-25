@@ -95,7 +95,8 @@ These are basically just the <i>MODULE.rb</i> files. The dependencies and additi
 
 
 
-
+## License
+This project is licensed under the terms of the MIT license. See the [LICENSE](https://raw.githubusercontent.com/mica-framework/server/master/LICENSE) file.
 
 ## Contribution
 Feel free to contribute or create issues on this project! Let me know what you think! I'm happy about every feedback! :-)
