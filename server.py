@@ -20,8 +20,11 @@
 from flask import Flask
 from routes import *
 from config import *
+from os import urandom
 import multiprocessing
 import subprocess
+import time
+import random
 
 application = Flask(__name__)
 
@@ -40,20 +43,27 @@ def _run_restful_api():
         application.run(threaded=True)
 
 
+def _initial_image_build():
+    # get a random time to wait from 5 to 10 seconds for each worker
+    random.seed(urandom(5))
+    time_to_wait_for_build = random.randint(5, 10)
+
+    # now wait to start the build
+    time.sleep(time_to_wait_for_build)
+    subprocess.call(['/bin/bash', '/app/scripts/deploy_develop.sh'])
+
+
 def run_server():
     th = multiprocessing.Process(target=_run_restful_api)
     th.start()
 
 
-def initial_image_build():
-    sleep(20) # wait 20 seconds for the startup build
-    th = multiprocessing.Process(target=(lambda: subprocess.call(['/bin/bash', '/app/scripts/deploy_develop.sh'])))
-    th.start()
 
-
+# startup the server if this file is called as main file
 if __name__ == '__main__':
     # startup the server
     run_server()
 
-    # now initially build the images
-    initial_image_build()
+# at startup always run an automatic build
+init_thread = multiprocessing.Process(target=_initial_image_build)
+init_thread.start()

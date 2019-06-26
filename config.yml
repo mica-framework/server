@@ -16,8 +16,8 @@ database:
   influx:
     url: 'localhost'
     port: 8086
-    user: '' #FIXME that's again something what sould be a secret!!
-    password: '' # FIXME that's again something what should be a secret!!
+    user: 'root' # Default user for influx
+    password: 'root' # Default user for influx
     tablename: 'mica-framework'
 
 # configuration of the redisDB for server-caching

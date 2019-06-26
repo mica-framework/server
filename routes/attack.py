@@ -83,18 +83,18 @@ def run_attack():
 
         # add additional options for running a container in general
         add_options = ""
-        if os.environ["SYSLOG_RECEIVER"] is not None:
+        if "SYSLOG_RECEIVER" in os.environ and os.environ["SYSLOG_RECEIVER"] is not None:
             add_options += " --log-driver syslog --log-opt syslog-address=tcp://{}".format(os.environ["SYSLOG_RECEIVER"])
 
         # store the commands for the victims
         for victim in victim_list:
-            print('The user requests the attack {} for victim'.format(attack, victim))
+            print('The user requests the attack {} for victim {}'.format(attack, victim))
 
             # add additional host specific options
-            add_options += " -e HOSTNAME={}".format(victim)
+            victim_options = add_options + " -e HOSTNAME={}".format(victim)
 
             # now create the attack command
-            attack_cmd = 'docker run -d {} {}:5000/{}'.format(add_options, docker_host, attack)
+            attack_cmd = 'docker run -d {} {}:5000/{}'.format(victim_options, docker_host, attack)
 
             attacks.add_job(victim, "{}".format(attack_cmd))
 
