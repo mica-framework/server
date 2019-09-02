@@ -32,7 +32,7 @@ Please note, that you need to set the config.yml file back to default if you're 
 possible by customizing the docker-compose YAML files.
 
 ```bash
-docker-compose up -f docker-compose.yml -f ./docker/influxdb.yml --build
+docker-compose -f docker-compose.yml -f ./docker/influxdb.yml up --build
 ```
 
 The server also starts two separated services, which are mandatory for the central MiCA-Server:
